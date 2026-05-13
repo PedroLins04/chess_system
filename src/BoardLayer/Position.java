@@ -1,4 +1,4 @@
-package BoardGame;
+package BoardLayer;
 
 import java.util.Objects;
 
@@ -16,7 +16,7 @@ public class Position {
         this.Column = column;
     }
 
-    //GETS AND SETS
+    //GETTERS AND SETTERS
 
     public int getRow() {
         return Row;
