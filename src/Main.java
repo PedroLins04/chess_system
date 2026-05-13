@@ -1,8 +1,9 @@
-import BoardLayer.Board;
-import BoardLayer.Piece;
-import BoardLayer.Position;
+
+import ChessLayer.ChessConsole.UI;
+import ChessLayer.Match;
 
 void main() {
 
-    Board board = new Board(8, 5);
+    Match match = new Match();
+    UI.printBoard(match.getPieces());
 }
