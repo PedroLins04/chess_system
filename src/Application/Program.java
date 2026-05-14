@@ -1,10 +1,13 @@
 package Application;
 
+import BoardLayer.Exception.BoardException;
 import ChessLayer.ChessConsole.UI;
+import ChessLayer.ChessException;
 import ChessLayer.ChessPiece;
 import ChessLayer.ChessPosition;
 import ChessLayer.Match;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Program {
@@ -16,16 +19,30 @@ public class Program {
         Match match = new Match();
 
         while (true) {
-            UI.printBoard(match.getPieces());
-            System.out.println();
-            System.out.print("Source: ");
-            ChessPosition source = UI.ReadChessPosition(sc);
+            try {
 
-            System.out.println();
-            System.out.print("Target: ");
-            ChessPosition target = UI.ReadChessPosition(sc);
+                UI.clearScreen();
+                UI.printBoard(match.getPieces());
 
-            ChessPiece capturedPiece = match.performChessMove(source, target);
+                System.out.println();
+                System.out.print("Source: ");
+                ChessPosition source = UI.ReadChessPosition(sc);
+
+                System.out.println();
+                System.out.print("Target: ");
+                ChessPosition target = UI.ReadChessPosition(sc);
+
+                ChessPiece capturedPiece = match.performChessMove(source, target);
+            } catch (ChessException e) {
+                System.out.println(e.getMessage());
+                sc.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println(e.getMessage());
+                sc.nextLine();
+            } catch (BoardException e) {
+                System.out.println(e.getMessage());
+                sc.nextLine();
+            }
         }
 
     }
