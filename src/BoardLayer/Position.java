@@ -9,9 +9,10 @@ public class Position {
 
     //CONSTRUCTORS
 
-    public Position (){}
+    public Position() {
+    }
 
-    public Position (int row, int column) {
+    public Position(int row, int column) {
         this.Row = row;
         this.Column = column;
     }
@@ -55,5 +56,12 @@ public class Position {
         return "{Row=" + Row +
                 ", Column=" + Column +
                 '}';
+    }
+
+    //METHODS
+
+    public void setValues(int row, int column) {
+        this.Row = row;
+        this.Column = column;
     }
 }
