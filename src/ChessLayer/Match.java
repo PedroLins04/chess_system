@@ -64,10 +64,16 @@ public class Match {
 
     }
 
+    public boolean[][] possibleMove(ChessPosition sourcePosition) {
+        Position position = sourcePosition.toPosition();
+        validateSourcePosition(position);
+        return board.piece(position).possibleMoves();
+    }
+
     private void initialSetup() {
 
         //WHITE
-        placeNewPiece('a', 1, new Rook(board, Color.WHITE));
+        placeNewPiece('a', 3, new Rook(board, Color.WHITE));
         placeNewPiece('b', 1, new Knight(board, Color.WHITE));
         placeNewPiece('c', 1, new Bishop(board, Color.WHITE));
         placeNewPiece('d', 1, new Queen(board, Color.WHITE));
