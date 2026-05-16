@@ -5,11 +5,17 @@ import BoardLayer.Piece;
 import BoardLayer.Position;
 import ChessLayer.ChessPieces.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Match {
 
     private Board board;
     private int turn;
     private Color CurrentPlayer;
+
+    private List<Piece> onBoard = new ArrayList<>();
+    private List<Piece> captured = new ArrayList<>();
 
     //CONSTRUCTORS
 
@@ -47,7 +53,7 @@ public class Match {
         if (!board.thereIsAPiece(position)) {
             throw new ChessException("There is no piece on source position");
         }
-        if (CurrentPlayer != ((ChessPiece)board.piece(position)).getColor()) {
+        if (CurrentPlayer != ((ChessPiece) board.piece(position)).getColor()) {
             throw new ChessException("You can't move the opponent pieces!!!");
         }
         if (!board.piece(position).isThereAnyPossibleMove()) {
@@ -65,6 +71,10 @@ public class Match {
         Piece p = board.removePiece(source);
         Piece capturedPiece = board.removePiece(target);
         board.placePiece(p, target);
+        if (capturedPiece != null) {
+            onBoard.remove(capturedPiece);
+            captured.add(capturedPiece);
+        }
         return capturedPiece;
     }
 
@@ -80,6 +90,7 @@ public class Match {
 
     private void placeNewPiece(char column, int row, ChessPiece piece) {
         board.placePiece(piece, new ChessPosition(column, row).toPosition());
+        onBoard.add(piece);
 
     }
 
@@ -91,10 +102,9 @@ public class Match {
 
     private void nextTurn() {
         turn++;
-        if ( CurrentPlayer == Color.PURPLE){
+        if (CurrentPlayer == Color.PURPLE) {
             CurrentPlayer = Color.GREEN;
-        }
-        else {
+        } else {
             CurrentPlayer = Color.PURPLE;
         }
     }

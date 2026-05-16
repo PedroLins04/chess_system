@@ -7,7 +7,9 @@ import ChessLayer.ChessPiece;
 import ChessLayer.ChessPosition;
 import ChessLayer.Match;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Program {
@@ -16,16 +18,18 @@ public class Program {
 
         System.out.println();
 
+        final String ANSI_CYAN = "\u001B[36m";
         Match match = new Match();
+        List<ChessPiece> captured = new ArrayList<>();
 
         while (true) {
             try {
 
                 UI.clearScreen();
-                UI.printMatch(match);
+                UI.printMatch(match, captured);
 
                 System.out.println();
-                System.out.print("Source: ");
+                System.out.print(ANSI_CYAN + "Source: ");
                 ChessPosition source = UI.ReadChessPosition(sc);
 
                 boolean[][] possibleMoves = match.possibleMove(source);
@@ -33,10 +37,13 @@ public class Program {
                 UI.printBoard(match.getPieces(), possibleMoves);
 
                 System.out.println();
-                System.out.print("Target: ");
+                System.out.print(ANSI_CYAN + "Target: ");
                 ChessPosition target = UI.ReadChessPosition(sc);
 
                 ChessPiece capturedPiece = match.performChessMove(source, target);
+                if (capturedPiece != null) {
+                    captured.add(capturedPiece);
+                }
             } catch (ChessException e) {
                 System.out.println(e.getMessage());
                 sc.nextLine();

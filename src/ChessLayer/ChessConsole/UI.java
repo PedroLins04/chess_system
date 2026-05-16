@@ -5,8 +5,11 @@ import ChessLayer.ChessPosition;
 import ChessLayer.Color;
 import ChessLayer.Match;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class UI {
 
@@ -16,6 +19,7 @@ public class UI {
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
+
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -32,11 +36,18 @@ public class UI {
         System.out.println(ANSI_CYAN + "  a b c d e f g h");
     }
 
-    public static void printMatch(Match match){
+    public static void printMatch(Match match, List<ChessPiece> captured) {
         printBoard(match.getPieces());
         System.out.println();
-        System.out.println("Turn: " + match.getTurn());
-        System.out.println("Waiting Player: " + match.getCurrentPlayer());
+        printCapturedPieces(captured);
+        System.out.println(ANSI_CYAN + "Turn: " + match.getTurn());
+        System.out.print(ANSI_CYAN + "Waiting Player:" + ANSI_RESET);
+        if (match.getCurrentPlayer() == Color.PURPLE) {
+            System.out.println(ANSI_PURPLE + "PURPLE");
+        } else {
+            System.out.println(ANSI_GREEN + "GREEN");
+        }
+        System.out.println(ANSI_RESET);
     }
 
     public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) {
@@ -75,5 +86,21 @@ public class UI {
         } catch (RuntimeException e) {
             throw new InputMismatchException("Error: Invalid values.");
         }
+    }
+
+    private static void printCapturedPieces(List<ChessPiece> captured) {
+        List<ChessPiece> purple = captured.stream().filter(x -> x.getColor() == Color.PURPLE).collect(Collectors.toList());
+        List<ChessPiece> green = captured.stream().filter(x -> x.getColor() == Color.GREEN).collect(Collectors.toList());
+        System.out.println("Captured Pieces:");
+
+        System.out.print(ANSI_PURPLE + "Purple: ");
+        System.out.print(ANSI_PURPLE);
+        System.out.println(Arrays.toString(purple.toArray()));
+        System.out.print(ANSI_RESET);
+
+        System.out.print(ANSI_GREEN + "Green: ");
+        System.out.print(ANSI_GREEN);
+        System.out.println(Arrays.toString(green.toArray()));
+        System.out.println(ANSI_RESET);
     }
 }
