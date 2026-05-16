@@ -14,8 +14,7 @@ public class UI {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
-
+    public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
     public static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -45,7 +44,7 @@ public class UI {
 
     private static void printPiece(ChessPiece piece, boolean backGround) {
         if (backGround) {
-            System.out.print(ANSI_WHITE_BACKGROUND);
+            System.out.print(ANSI_YELLOW_BACKGROUND);
         }
         if (piece == null) {
             System.out.print(ANSI_BLUE + "-" + ANSI_RESET);
