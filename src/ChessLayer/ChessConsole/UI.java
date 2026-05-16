@@ -3,6 +3,7 @@ package ChessLayer.ChessConsole;
 import ChessLayer.ChessPiece;
 import ChessLayer.ChessPosition;
 import ChessLayer.Color;
+import ChessLayer.Match;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -31,6 +32,13 @@ public class UI {
         System.out.println(ANSI_CYAN + "  a b c d e f g h");
     }
 
+    public static void printMatch(Match match){
+        printBoard(match.getPieces());
+        System.out.println();
+        System.out.println("Turn: " + match.getTurn());
+        System.out.println("Waiting Player: " + match.getCurrentPlayer());
+    }
+
     public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) {
         for (int i = 0; i < pieces.length; i++) {
             System.out.print(ANSI_CYAN + (8 - i) + " ");
@@ -49,7 +57,7 @@ public class UI {
         if (piece == null) {
             System.out.print(ANSI_BLUE + "-" + ANSI_RESET);
         } else {
-            if (piece.getColor() == Color.WHITE) {
+            if (piece.getColor() == Color.PURPLE) {
                 System.out.print(ANSI_PURPLE + piece + ANSI_RESET);
             } else {
                 System.out.print(ANSI_GREEN + piece + ANSI_RESET);
@@ -67,7 +75,5 @@ public class UI {
         } catch (RuntimeException e) {
             throw new InputMismatchException("Error: Invalid values.");
         }
-
-
     }
 }
