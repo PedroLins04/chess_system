@@ -18,6 +18,7 @@ public class UI {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
 
     public static void clearScreen() {
@@ -48,6 +49,10 @@ public class UI {
             System.out.println(ANSI_GREEN + "GREEN");
         }
         System.out.println(ANSI_RESET);
+
+        if (match.getCheck()) {
+            System.out.println(ANSI_YELLOW + "CHECK!" + ANSI_RESET);
+        }
     }
 
     public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) {
