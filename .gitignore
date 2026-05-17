@@ -4,6 +4,7 @@ out/
 !**/src/test/**/out/
 .kotlin
 chess_system.iml
+.idea
 
 ### Eclipse ###
 .apt_generated
