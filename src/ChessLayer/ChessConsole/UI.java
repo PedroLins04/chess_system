@@ -41,17 +41,30 @@ public class UI {
         printBoard(match.getPieces());
         System.out.println();
         printCapturedPieces(captured);
-        System.out.println(ANSI_CYAN + "Turn: " + match.getTurn());
-        System.out.print(ANSI_CYAN + "Waiting Player:" + ANSI_RESET);
-        if (match.getCurrentPlayer() == Color.PURPLE) {
-            System.out.println(ANSI_PURPLE + "PURPLE");
-        } else {
-            System.out.println(ANSI_GREEN + "GREEN");
-        }
-        System.out.println(ANSI_RESET);
 
-        if (match.getCheck()) {
-            System.out.println(ANSI_YELLOW + "CHECK!" + ANSI_RESET);
+        if (match.getCheckMate()) {
+            System.out.println(ANSI_YELLOW + "CHECKMATE!" + ANSI_RESET);
+            System.out.print(ANSI_CYAN + "Winner:" + ANSI_RESET);
+            if (match.getCurrentPlayer() == Color.PURPLE) {
+                System.out.println(ANSI_PURPLE + "PURPLE" + ANSI_RESET);
+                System.out.println();
+            } else if (match.getCurrentPlayer() == Color.GREEN) {
+                System.out.println(ANSI_GREEN + "GREEN" + ANSI_RESET);
+                System.out.println();
+            }
+        } else {
+            System.out.println(ANSI_CYAN + "Turn: " + match.getTurn());
+            System.out.print(ANSI_CYAN + "Waiting Player:" + ANSI_RESET);
+            if (match.getCurrentPlayer() == Color.PURPLE) {
+                System.out.println(ANSI_PURPLE + "PURPLE");
+            } else {
+                System.out.println(ANSI_GREEN + "GREEN");
+            }
+            System.out.println(ANSI_RESET);
+
+            if (match.getCheck()) {
+                System.out.println(ANSI_YELLOW + "CHECK!" + ANSI_RESET);
+            }
         }
     }
 

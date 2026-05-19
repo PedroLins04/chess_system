@@ -15,6 +15,7 @@ public class Match {
     private int turn;
     private Color CurrentPlayer;
     private boolean Check;
+    private boolean checkMate;
 
     private List<Piece> onBoard = new ArrayList<>();
     private List<Piece> captured = new ArrayList<>();
@@ -40,6 +41,10 @@ public class Match {
 
     public boolean getCheck() {
         return Check;
+    }
+
+    public boolean getCheckMate() {
+        return checkMate;
     }
 
     //METHODS
@@ -106,7 +111,11 @@ public class Match {
         }
         Check = (TestCheck(opponent(CurrentPlayer))) ? true : false;
 
-        nextTurn();
+        if (testCheckMate(opponent(getCurrentPlayer()))) {
+            checkMate = true;
+        } else {
+            nextTurn();
+        }
         return (ChessPiece) capturedPiece;
     }
 
@@ -163,9 +172,35 @@ public class Match {
         return false;
     }
 
+    private boolean testCheckMate(Color color) {
+        if (!TestCheck(color)) {
+            return false;
+        }
+        List<Piece> list = onBoard.stream().filter(x -> ((ChessPiece) x).getColor() == color)
+                .collect(Collectors.toList());
+        for (Piece p : list) {
+            boolean[][] mat = p.possibleMoves();
+            for (int i = 0; i < board.getRows(); i++) {
+                for (int j = 0; j < board.getColumns(); j++) {
+                    if (mat[i][j]) {
+                        Position source = ((ChessPiece) p).getChessPosition().toPosition();
+                        Position target = new Position(i, j);
+                        Piece capturedPiece = makeMove(source, target);
+                        boolean testCheck = TestCheck(color);
+                        UndoMove(source, target, capturedPiece);
+                        if (!testCheck) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     private void initialSetup() {
 
-        //PURPLE
+        /*PURPLE
         placeNewPiece('a', 3, new Rook(board, Color.PURPLE));
         placeNewPiece('b', 1, new Knight(board, Color.PURPLE));
         placeNewPiece('c', 1, new Bishop(board, Color.PURPLE));
@@ -200,5 +235,15 @@ public class Match {
         placeNewPiece('f', 7, new Pawn(board, Color.GREEN));
         placeNewPiece('g', 7, new Pawn(board, Color.GREEN));
         placeNewPiece('h', 7, new Pawn(board, Color.GREEN));
+    }
+    */
+
+        placeNewPiece('h', 7, new Rook(board, Color.PURPLE));
+        placeNewPiece('d', 1, new Rook(board, Color.PURPLE));
+        placeNewPiece('e', 1, new King(board, Color.PURPLE));
+
+        placeNewPiece('b', 8, new Rook(board, Color.GREEN));
+        placeNewPiece('a', 8, new King(board, Color.GREEN));
+
     }
 }
