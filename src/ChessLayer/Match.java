@@ -202,15 +202,15 @@ public class Match {
 
     private void initialSetup() {
 
-        /*PURPLE
-        placeNewPiece('a', 3, new Rook(board, Color.PURPLE));
+        //PURPLE
+        placeNewPiece('a', 1, new Rook(board, Color.PURPLE));
         placeNewPiece('b', 1, new Knight(board, Color.PURPLE));
         placeNewPiece('c', 1, new Bishop(board, Color.PURPLE));
         placeNewPiece('d', 1, new Queen(board, Color.PURPLE));
-        placeNewPiece('e', 3, new King(board, Color.PURPLE));
+        placeNewPiece('e', 1, new King(board, Color.PURPLE));
         placeNewPiece('f', 1, new Bishop(board, Color.PURPLE));
         placeNewPiece('g', 1, new Knight(board, Color.PURPLE));
-        placeNewPiece('h', 3, new Rook(board, Color.PURPLE));
+        placeNewPiece('h', 1, new Rook(board, Color.PURPLE));
         placeNewPiece('a', 2, new Pawn(board, Color.PURPLE));
         placeNewPiece('b', 2, new Pawn(board, Color.PURPLE));
         placeNewPiece('c', 2, new Pawn(board, Color.PURPLE));
@@ -221,14 +221,14 @@ public class Match {
         placeNewPiece('h', 2, new Pawn(board, Color.PURPLE));
 
         //GREEN
-        placeNewPiece('a', 6, new Rook(board, Color.GREEN));
+        placeNewPiece('a', 8, new Rook(board, Color.GREEN));
         placeNewPiece('b', 8, new Knight(board, Color.GREEN));
         placeNewPiece('c', 8, new Bishop(board, Color.GREEN));
         placeNewPiece('d', 8, new Queen(board, Color.GREEN));
-        placeNewPiece('e', 6, new King(board, Color.GREEN));
+        placeNewPiece('e', 8, new King(board, Color.GREEN));
         placeNewPiece('f', 8, new Bishop(board, Color.GREEN));
         placeNewPiece('g', 8, new Knight(board, Color.GREEN));
-        placeNewPiece('h', 6, new Rook(board, Color.GREEN));
+        placeNewPiece('h', 8, new Rook(board, Color.GREEN));
         placeNewPiece('a', 7, new Pawn(board, Color.GREEN));
         placeNewPiece('b', 7, new Pawn(board, Color.GREEN));
         placeNewPiece('c', 7, new Pawn(board, Color.GREEN));
@@ -237,15 +237,5 @@ public class Match {
         placeNewPiece('f', 7, new Pawn(board, Color.GREEN));
         placeNewPiece('g', 7, new Pawn(board, Color.GREEN));
         placeNewPiece('h', 7, new Pawn(board, Color.GREEN));
-    }
-    */
-
-        placeNewPiece('h', 7, new Rook(board, Color.PURPLE));
-        placeNewPiece('d', 1, new Rook(board, Color.PURPLE));
-        placeNewPiece('e', 1, new King(board, Color.PURPLE));
-
-        placeNewPiece('b', 8, new Rook(board, Color.GREEN));
-        placeNewPiece('a', 8, new King(board, Color.GREEN));
-
     }
 }
