@@ -40,7 +40,7 @@ public class Pawn extends ChessPiece {
             }
             p.setValues(position.getRow() - 1, position.getColumn() + 1);
         }
-        
+
         //GREEN
         else {
             p.setValues(position.getRow() + 1, position.getColumn());
