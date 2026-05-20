@@ -72,13 +72,16 @@ public class Match {
     }
 
     private void validateTargetPosition(Position source, Position target) {
+        if (board.piece(source) == board.piece(target)) {
+            throw new ChessException("No moves! Press Enter and try again.");
+        }
         if (!board.piece(source).possibleMove(target)) {
             throw new ChessException("The chosen piece can't move to the target position!");
         }
     }
 
     private Piece makeMove(Position source, Position target) {
-        ChessPiece p = (ChessPiece)board.removePiece(source);
+        ChessPiece p = (ChessPiece) board.removePiece(source);
         p.increaseMoveCount();
         Piece capturedPiece = board.removePiece(target);
         board.placePiece(p, target);
