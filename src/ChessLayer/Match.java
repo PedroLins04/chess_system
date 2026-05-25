@@ -5,6 +5,7 @@ import BoardLayer.Piece;
 import BoardLayer.Position;
 import ChessLayer.ChessPieces.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ public class Match {
     private Color CurrentPlayer;
     private boolean Check;
     private boolean checkMate;
+    private ChessPiece enPassantVulnerable;
 
     private List<Piece> onBoard = new ArrayList<>();
     private List<Piece> captured = new ArrayList<>();
@@ -45,6 +47,10 @@ public class Match {
 
     public boolean getCheckMate() {
         return checkMate;
+    }
+
+    public ChessPiece getEnPassantVulnerable() {
+        return enPassantVulnerable;
     }
 
     //METHODS
@@ -89,6 +95,20 @@ public class Match {
             onBoard.remove(capturedPiece);
             captured.add(capturedPiece);
         }
+        // enPassant
+        if (p instanceof Pawn) {
+            if (source.getColumn() != target.getColumn() && capturedPiece == null) {
+                Position pawnP;
+                if (p.getColor() == Color.PURPLE) {
+                    pawnP = new Position(target.getRow() + 1, target.getColumn());
+                } else {
+                    pawnP = new Position(target.getRow() - 1, target.getColumn());
+                }
+                capturedPiece = board.removePiece(pawnP);
+                captured.add(capturedPiece);
+                onBoard.remove(capturedPiece);
+            }
+        }
         if (p instanceof King && target.getColumn() == source.getColumn() + 2) {
             Position sourceR1 = new Position(source.getRow(), source.getColumn() + 3);
             Position targetR1 = new Position(source.getRow(), source.getColumn() + 1);
@@ -115,6 +135,19 @@ public class Match {
             captured.remove(capturedPiece);
             onBoard.add(capturedPiece);
         }
+        // enPassant
+        if (p instanceof Pawn) {
+            if (source.getColumn() != target.getColumn() && capturedPiece == null) {
+                Position pawnP;
+                ChessPiece pawn = (ChessPiece) board.removePiece(target);
+                if (p.getColor() == Color.PURPLE) {
+                    pawnP = new Position(3, target.getColumn());
+                } else {
+                    pawnP = new Position(4, target.getColumn());
+                }
+                board.placePiece(pawn, pawnP);
+            }
+        }
         if (p instanceof King && target.getColumn() == source.getColumn() + 2) {
             Position sourceR1 = new Position(source.getRow(), source.getColumn() + 3);
             Position targetR1 = new Position(source.getRow(), source.getColumn() + 1);
@@ -137,6 +170,14 @@ public class Match {
         validateSourcePosition(source);
         validateTargetPosition(source, target);
         Piece capturedPiece = makeMove(source, target);
+
+        ChessPiece movedPiece = (ChessPiece) board.piece(target);
+
+        if (movedPiece instanceof Pawn && (target.getRow() == source.getRow() - 2 || (target.getRow() == source.getRow() + 2))) {
+            enPassantVulnerable = movedPiece;
+        } else {
+            enPassantVulnerable = null;
+        }
 
         if (TestCheck(CurrentPlayer)) {
             UndoMove(source, target, capturedPiece);
@@ -242,14 +283,14 @@ public class Match {
         placeNewPiece('f', 1, new Bishop(board, Color.PURPLE));
         placeNewPiece('g', 1, new Knight(board, Color.PURPLE));
         placeNewPiece('h', 1, new Rook(board, Color.PURPLE));
-        placeNewPiece('a', 2, new Pawn(board, Color.PURPLE));
-        placeNewPiece('b', 2, new Pawn(board, Color.PURPLE));
-        placeNewPiece('c', 2, new Pawn(board, Color.PURPLE));
-        placeNewPiece('d', 2, new Pawn(board, Color.PURPLE));
-        placeNewPiece('e', 2, new Pawn(board, Color.PURPLE));
-        placeNewPiece('f', 2, new Pawn(board, Color.PURPLE));
-        placeNewPiece('g', 2, new Pawn(board, Color.PURPLE));
-        placeNewPiece('h', 2, new Pawn(board, Color.PURPLE));
+        placeNewPiece('a', 2, new Pawn(board, Color.PURPLE, this));
+        placeNewPiece('b', 2, new Pawn(board, Color.PURPLE, this));
+        placeNewPiece('c', 2, new Pawn(board, Color.PURPLE, this));
+        placeNewPiece('d', 2, new Pawn(board, Color.PURPLE, this));
+        placeNewPiece('e', 2, new Pawn(board, Color.PURPLE, this));
+        placeNewPiece('f', 2, new Pawn(board, Color.PURPLE, this));
+        placeNewPiece('g', 2, new Pawn(board, Color.PURPLE, this));
+        placeNewPiece('h', 2, new Pawn(board, Color.PURPLE, this));
 
         //GREEN
         placeNewPiece('a', 8, new Rook(board, Color.GREEN));
@@ -260,13 +301,13 @@ public class Match {
         placeNewPiece('f', 8, new Bishop(board, Color.GREEN));
         placeNewPiece('g', 8, new Knight(board, Color.GREEN));
         placeNewPiece('h', 8, new Rook(board, Color.GREEN));
-        placeNewPiece('a', 7, new Pawn(board, Color.GREEN));
-        placeNewPiece('b', 7, new Pawn(board, Color.GREEN));
-        placeNewPiece('c', 7, new Pawn(board, Color.GREEN));
-        placeNewPiece('d', 7, new Pawn(board, Color.GREEN));
-        placeNewPiece('e', 7, new Pawn(board, Color.GREEN));
-        placeNewPiece('f', 7, new Pawn(board, Color.GREEN));
-        placeNewPiece('g', 7, new Pawn(board, Color.GREEN));
-        placeNewPiece('h', 7, new Pawn(board, Color.GREEN));
+        placeNewPiece('a', 7, new Pawn(board, Color.GREEN, this));
+        placeNewPiece('b', 7, new Pawn(board, Color.GREEN, this));
+        placeNewPiece('c', 7, new Pawn(board, Color.GREEN, this));
+        placeNewPiece('d', 7, new Pawn(board, Color.GREEN, this));
+        placeNewPiece('e', 7, new Pawn(board, Color.GREEN, this));
+        placeNewPiece('f', 7, new Pawn(board, Color.GREEN, this));
+        placeNewPiece('g', 7, new Pawn(board, Color.GREEN, this));
+        placeNewPiece('h', 7, new Pawn(board, Color.GREEN, this));
     }
 }
