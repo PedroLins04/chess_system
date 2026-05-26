@@ -90,16 +90,11 @@ git clone https://github.com/PedroLins04/chess_system.git
 cd chess_system
 ```
 
-### Compilar
-
-```bash
-javac -d bin src/application/*.java src/boardgame/*.java src/chess/*.java src/chess/pieces/*.java
-```
-
 ### Executar
+Com o terminal aberto em "/chess_system/src/Application" execute:
 
 ```bash
-java -cp bin application.Program
+java Program.java
 ```
 
 >  **Dica**: No Windows, use o **Git Bash** para a exibição correta das cores ANSI.
