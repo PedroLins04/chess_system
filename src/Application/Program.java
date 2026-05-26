@@ -19,6 +19,7 @@ public class Program {
         System.out.println();
 
         final String ANSI_CYAN = "\u001B[36m";
+        final String ANSI_YELLOW = "\u001B[33m";
         Match match = new Match();
         List<ChessPiece> captured = new ArrayList<>();
 
@@ -44,6 +45,17 @@ public class Program {
                 if (capturedPiece != null) {
                     captured.add(capturedPiece);
                 }
+
+                if (match.getPromoted() != null) {
+                    System.out.println(ANSI_YELLOW + "Enter the type for promotion! {Q/R/N/B}");
+                    String type = sc.nextLine().toUpperCase();
+                    while (!type.equals("Q") && !type.equals("R") && !type.equals("N") && !type.equals("B")) {
+                        System.out.println(ANSI_YELLOW + "Invalid Value. Enter the type for promotion! {Q/R/N/B}");
+                        type = sc.nextLine().toUpperCase();
+                    }
+                    match.replacePromotedPiece(type);
+                }
+
             } catch (ChessException e) {
                 System.out.println(e.getMessage());
                 sc.nextLine();

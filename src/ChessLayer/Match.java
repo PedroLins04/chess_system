@@ -18,7 +18,7 @@ public class Match {
     private boolean Check;
     private boolean checkMate;
     private ChessPiece enPassantVulnerable;
-
+    private ChessPiece promoted;
     private List<Piece> onBoard = new ArrayList<>();
     private List<Piece> captured = new ArrayList<>();
 
@@ -53,6 +53,10 @@ public class Match {
         return enPassantVulnerable;
     }
 
+    public ChessPiece getPromoted() {
+        return promoted;
+    }
+
     //METHODS
 
     public ChessPiece[][] getPieces() {
@@ -63,6 +67,31 @@ public class Match {
             }
         }
         return mat;
+    }
+
+    public ChessPiece replacePromotedPiece(String type) {
+        if (promoted == null) {
+            throw new IllegalStateException("There is no Piece to be promoted!");
+        }
+        if (!type.equals("B") && !type.equals("N") && !type.equals("Q") && !type.equals("R")) {
+            return promoted;
+        }
+        Position pos = promoted.getChessPosition().toPosition();
+        Piece p = board.removePiece(pos);
+        onBoard.remove(p);
+
+        ChessPiece newPiece = newPiece(type, promoted.getColor());
+        board.placePiece(newPiece, pos);
+        onBoard.add(newPiece);
+
+        return newPiece;
+    }
+
+    private ChessPiece newPiece(String type, Color color) {
+        if (type.equals("B")) return new Bishop(board, color);
+        if (type.equals("N")) return new Knight(board, color);
+        if (type.equals("R")) return new Rook(board, color);
+        return new Queen(board, color);
     }
 
     private void validateSourcePosition(Position position) {
@@ -173,22 +202,33 @@ public class Match {
 
         ChessPiece movedPiece = (ChessPiece) board.piece(target);
 
-        if (movedPiece instanceof Pawn && (target.getRow() == source.getRow() - 2 || (target.getRow() == source.getRow() + 2))) {
-            enPassantVulnerable = movedPiece;
-        } else {
-            enPassantVulnerable = null;
-        }
-
         if (TestCheck(CurrentPlayer)) {
             UndoMove(source, target, capturedPiece);
             throw new ChessException("You can't put yourself in check!");
         }
         Check = (TestCheck(opponent(CurrentPlayer))) ? true : false;
 
+        //PROMOTION
+        promoted = null;
+        if (movedPiece instanceof Pawn) {
+            if (movedPiece.getColor() == Color.PURPLE && target.getRow() == 0
+                    || movedPiece.getColor() == Color.GREEN && target.getRow() == 7) {
+                promoted = (ChessPiece) board.piece(target);
+                promoted = replacePromotedPiece("Q");
+            }
+        }
+
         if (testCheckMate(opponent(getCurrentPlayer()))) {
             checkMate = true;
         } else {
             nextTurn();
+        }
+
+        //EN PASSANT
+        if (movedPiece instanceof Pawn && (target.getRow() == source.getRow() - 2 || (target.getRow() == source.getRow() + 2))) {
+            enPassantVulnerable = movedPiece;
+        } else {
+            enPassantVulnerable = null;
         }
         return (ChessPiece) capturedPiece;
     }
